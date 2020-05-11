@@ -1,0 +1,14 @@
+.centeredLogo {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.centeredLogo img {
+  margin-top: 100px;
+  height: 100px;
+  margin-bottom: 50px;
+}
+.centeredLogo {
+  margin-top: 150px;
+}

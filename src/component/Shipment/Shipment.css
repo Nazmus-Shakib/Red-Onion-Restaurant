@@ -1,0 +1,20 @@
+.shipContainer {
+  margin: 100px 0px;
+  display: flex;
+}
+.satImg img {
+  margin-left: 100px;
+  height: 550px;
+  width: 500px;
+}
+.shipImg img {
+  height: 100px;
+  width: 100px;
+  margin-bottom: 30px;
+}
+.userInfo {
+  margin-left: 25px;
+}
+.smallImg {
+  margin-top: 30px;
+}

@@ -1,0 +1,19 @@
+.food {
+  margin-top: 90px;
+}
+.cart-controller {
+  border-radius: 25px;
+  border: 1px solid lightgrey;
+  width: 160px;
+}
+.cart-controller button {
+  font-size: 20px;
+  margin: 0px 5px;
+  background-color: ivory;
+}
+.addBtn button {
+  padding: 5px 10px;
+}
+.pmButton .btn {
+  width: 50px;
+}

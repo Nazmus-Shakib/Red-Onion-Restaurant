@@ -1,0 +1,16 @@
+.checkOutContainer {
+  margin-top: 120px;
+  display: flex;
+  margin-bottom: 100px;
+}
+.cart-calculation {
+  margin-left: 150px;
+}
+.detailsContainer {
+  margin-left: 70px;
+  margin-right: 70px;
+}
+.placeButton {
+  width: 480px;
+  margin-left: 50px;
+}

@@ -1,0 +1,37 @@
+.banner {
+  margin-top: 80px;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  position: relative;
+  text-align: center;
+  color: black;
+}
+.banner img {
+  height: 500px;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+/* .search-box {
+  display: flex;
+} */
+.banner .search-box {
+  position: relative;
+}
+.search-btn {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  height: 100%;
+  border-radius: 25px;
+}
+.banner .form-control {
+  border-radius: 25px;
+  border: 1px solid lightgray;
+  padding-left: 20px;
+}

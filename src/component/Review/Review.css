@@ -1,0 +1,6 @@
+.imgContainer {
+  display: flex;
+}
+.imgContainer .card {
+  border: none;
+}
