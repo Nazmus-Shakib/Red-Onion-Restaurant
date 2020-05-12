@@ -9,12 +9,10 @@ import {
 
 const FoodDetails = (props) => {
   const [selectedFood, setSelectedFood] = useState([]);
-  console.log(selectedFood);
+
   const { foodId } = useParams();
-  console.log(foodId);
 
-  //const [foods, setFoods] = useState([]);
-
+  const [selectedBigImg, setSelectedBigImg] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -25,23 +23,11 @@ const FoodDetails = (props) => {
         setSelectedFood(data);
       })
       .catch((err) => console.log(err));
+
+    if (selectedFood.images) {
+      setSelectedBigImg(selectedFood.images[0]);
+    }
   }, [selectedFood.name]);
-
-  // useEffect(() => {
-  //   // const savedCart = getDatabaseCart();
-  //   // const foodKeys = Object.keys(savedCart);
-
-  //   if (foods.length > 0) {
-  //     const food = foods.find((fd) => fd.id == foodId);
-
-  //     // const previousCart = foodKeys.map((existingKey) => {
-  //     //   food.quantity = savedCart[existingKey];
-  //     //   return food;
-  //     // });
-
-  //     setSelectedFood(food);
-  //   }
-  // }, [foods]);
 
   const finalCartHandler = (selectedFood) => {
     selectedFood.quantity = quantity;
@@ -94,6 +80,22 @@ const FoodDetails = (props) => {
                   <FontAwesomeIcon icon={faCheckCircle} /> Item added to Cart
                 </p>
               )}
+            </div>
+
+            <div className="more-images mt-5 ">
+              {selectedFood.images.map((img, index) => (
+                <img
+                  onClick={() => setSelectedBigImg(selectedFood.images[index])}
+                  className={
+                    selectedFood.images[index] === selectedBigImg
+                      ? "mr-4 small-img active-small-img"
+                      : "mr-4 small-img"
+                  }
+                  height="150px"
+                  src={img}
+                  alt=""
+                />
+              ))}
             </div>
           </div>
 

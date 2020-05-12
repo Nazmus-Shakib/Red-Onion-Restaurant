@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./FoodSelectionLink.css";
 import FoodItems from "../FoodItems/FoodItems";
 import { Link } from "react-router-dom";
+import { useAuth } from "../useAuth/useAuth";
 
 const FoodSelectionLink = (props) => {
   const [foods, setFoods] = useState([]);
   const [selectedFoodType, setSelectedFoodType] = useState("Breakfast");
+  const auth = useAuth();
 
   useEffect(() => {
     fetch("http://localhost:3002/foods")
@@ -76,14 +78,16 @@ const FoodSelectionLink = (props) => {
         </div>
 
         <div className="text-center">
-          {props.cart.length ? (
+          {auth.user ? (
             <Link to="/checkout">
               <button className="btn btn-danger checkOutBtn">Check Out</button>
             </Link>
           ) : (
-            <button disabled className="btn btn-secondary checkOutBtn">
-              Check Out
-            </button>
+            <Link to="/login">
+              <button className="btn btn-secondary checkOutBtn">
+                Check Out
+              </button>
+            </Link>
           )}
         </div>
       </div>

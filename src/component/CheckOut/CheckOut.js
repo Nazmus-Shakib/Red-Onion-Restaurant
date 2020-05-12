@@ -2,10 +2,30 @@ import React, { useState } from "react";
 import "./CheckOut.css";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useAuth } from "../useAuth/useAuth";
+import Payment from "../Payment/Payment";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
 const CheckOut = (props) => {
+  const auth = useAuth();
   const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
+
+  const stripePromise = loadStripe(
+    "pk_test_QsfONLaKpNdyz0cv97kEJHmi00zlsfcgmg"
+  );
+  const [paid, setPaid] = useState(null);
+  const markAsPaid = (paymentInfo) => {
+    setPaid(paymentInfo);
+  };
+
+  const onSubmit = (data) => {
+    //console.log(data)
+    props.deliveryDetailsHandler(data);
+    props.getUserName(auth.user.name);
+    props.getUserEmail(auth.user.email);
+  };
+  const { todoor, road, flat, businessname, address } = props.deliveryDetails;
 
   const subTotal = props.cart.reduce((acc, crr) => {
     return acc + crr.price * crr.quantity;
@@ -20,67 +40,92 @@ const CheckOut = (props) => {
   return (
     <div className="checkOutContainer">
       <div className="col-md-4 detailsContainer ">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-group">
-            <input
-              name="deliveryAddress1"
-              className="form-control"
-              ref={register({ required: true })}
-              placeholder="Delivery To Door"
-            />
-            {errors.deliveryAddress1 && (
-              <span>Delivery To Door is required</span>
-            )}
-          </div>
+        <div
+          style={{
+            display:
+              todoor && road && flat && businessname && address
+                ? "none"
+                : "block",
+          }}
+        >
+          <h4>Delivery Details</h4>
+          <hr />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="form-group">
+              <input
+                name="todoor"
+                className="form-control"
+                ref={register({ required: true })}
+                defaultValue={todoor}
+                placeholder="Delivery To Door"
+              />
+              {errors.todoor && <span>Delivery To Door is required</span>}
+            </div>
 
-          <div className="form-group">
-            <input
-              name="deliveryAddress2"
-              className="form-control"
-              ref={register({ required: true })}
-              placeholder="Road No."
-            />
-            {errors.deliveryAddress2 && <span>Road No. is required</span>}
-          </div>
+            <div className="form-group">
+              <input
+                name="road"
+                className="form-control"
+                ref={register({ required: true })}
+                defaultValue={road}
+                placeholder="Road No."
+              />
+              {errors.road && <span>Road No. is required</span>}
+            </div>
 
-          <div className="form-group">
-            <input
-              name="deliveryAddress3"
-              className="form-control"
-              ref={register({ required: true })}
-              placeholder="Flat, Suite or Floor"
-            />
-            {errors.deliveryAddress3 && (
-              <span>Flat, Suite or Floor is required</span>
-            )}
-          </div>
+            <div className="form-group">
+              <input
+                name="flat"
+                className="form-control"
+                ref={register({ required: true })}
+                defaultValue={flat}
+                placeholder="Flat, Suite or Floor"
+              />
+              {errors.flat && <span>Flat, Suite or Floor is required</span>}
+            </div>
 
-          <div className="form-group">
-            <input
-              name="deliveryAddress4"
-              className="form-control"
-              ref={register({ required: true })}
-              placeholder="Business Name"
-            />
-            {errors.deliveryAddress4 && <span>Business Name is required</span>}
-          </div>
+            <div className="form-group">
+              <input
+                name="businessname"
+                className="form-control"
+                ref={register()}
+                defaultValue={businessname}
+                placeholder="Business Name"
+              />
+            </div>
 
-          <div className="form-group">
-            <input
-              name="deliveryAddress5"
-              className="form-control"
-              ref={register({ required: true })}
-              placeholder="Address"
-            />
-            {errors.deliveryAddress5 && <span>Address Name is required</span>}
-          </div>
+            <div className="form-group">
+              <input
+                name="address"
+                className="form-control"
+                ref={register({ required: true })}
+                defaultValue={address}
+                placeholder="Address"
+              />
+              {errors.address && <span>Address Name is required</span>}
+            </div>
 
-          <div className="form-group">
-            <button className="btn btn-danger btn-block" type="submit">
-              Save & Continue
-            </button>
-          </div>
-        </form>
+            <div className="form-group">
+              <button className="btn btn-danger btn-block" type="submit">
+                Save & Continue
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div
+          style={{
+            display:
+              todoor && road && flat && businessname && address
+                ? "block"
+                : "none",
+          }}
+        >
+          <h3>Payment Information</h3>
+          <Elements stripe={stripePromise}>
+            <Payment markAsPaid={markAsPaid}></Payment>
+          </Elements>
+        </div>
       </div>
 
       <div className="col-md-6 itemContainer">
@@ -141,11 +186,26 @@ const CheckOut = (props) => {
             <span>$ {grandTotal.toFixed(2)}</span>
           </p>
           <br />
-          <Link to="/shipment">
-            <button className="btn btn-secondary placeButton">
-              Place Order
+          {totalQuantity ? (
+            paid ? (
+              <Link to="/shipment">
+                <button
+                  onClick={() => props.clearCart()}
+                  className="btn btn-block btn-danger"
+                >
+                  Check Out Your Food
+                </button>
+              </Link>
+            ) : (
+              <button disabled className="btn btn-block btn-secondary">
+                Check Out Your Food
+              </button>
+            )
+          ) : (
+            <button disabled className="btn btn-block btn-secondary">
+              Nothing to Checkout
             </button>
-          </Link>
+          )}
         </div>
       </div>
     </div>

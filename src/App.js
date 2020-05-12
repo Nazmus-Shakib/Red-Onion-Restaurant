@@ -16,6 +16,54 @@ import Inventory from "./component/Inventory/Inventory";
 
 function App() {
   const [cart, setCart] = useState([]);
+  const [orderId, setOrderId] = useState(null);
+  const [deliveryDetails, setDeliveryDetails] = useState({
+    todoor: null,
+    road: null,
+    flat: null,
+    businessname: null,
+    address: null,
+  });
+  const [userName, setUserName] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+
+  const getUserName = (name) => {
+    setUserName(name);
+  };
+  const getUserEmail = (email) => {
+    setUserEmail(email);
+  };
+
+  const clearCart = () => {
+    const orderedItems = cart.map((cartItem) => {
+      return { food_id: cartItem.id, quantity: cartItem.quantity };
+    });
+    console.log(orderedItems);
+
+    // place orders
+    const orderDetailsData = {
+      name: userName,
+      email: userEmail,
+      items: orderedItems,
+      details: deliveryDetails,
+    };
+    fetch("http://localhost:3002/placeOrder", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(orderDetailsData),
+    })
+      .then((res) => res.json())
+      .then((data) => setOrderId(data._id));
+    console.log(orderId);
+
+    setCart([]);
+  };
+
+  const deliveryDetailsHandler = (data) => {
+    setDeliveryDetails(data);
+  };
 
   // for managing quantity in cart in header
   const cartHandler = (data) => {
@@ -79,13 +127,22 @@ function App() {
               <CheckOut
                 cart={cart}
                 checkOutItemHandler={checkOutItemHandler}
+                deliveryDetails={deliveryDetails}
+                deliveryDetailsHandler={deliveryDetailsHandler}
+                clearCart={clearCart}
+                getUserName={getUserName}
+                getUserEmail={getUserEmail}
               ></CheckOut>
               <Footer></Footer>
             </Route>
 
             <Route path="/shipment">
               <Header cart={cart}></Header>
-              <Shipment cart={cart}></Shipment>
+              <Shipment
+                deliveryDetails={deliveryDetails}
+                cart={cart}
+                orderId={orderId}
+              ></Shipment>
               <Footer></Footer>
             </Route>
 

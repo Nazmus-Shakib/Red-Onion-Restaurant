@@ -16,9 +16,9 @@ const Header = (props) => {
           <img src={logo} alt="Red Onion Logo"></img>
         </Link>
 
-        <Link to="/inventory">
+        {/* <Link to="/inventory">
           <button>Inventory</button>
-        </Link>
+        </Link> */}
 
         <ul className="navbar-nav align-items-center">
           <li className="nav-item active">
