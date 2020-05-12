@@ -10,7 +10,7 @@ const FoodSelectionLink = (props) => {
   const auth = useAuth();
 
   useEffect(() => {
-    fetch("http://localhost:3002/foods")
+    fetch("https://red-onion-restaurant-by-shakib.herokuapp.com/foods")
       .then((res) => res.json())
       .then((data) => {
         setFoods(data);

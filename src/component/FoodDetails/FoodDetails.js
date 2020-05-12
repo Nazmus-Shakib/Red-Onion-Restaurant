@@ -17,7 +17,7 @@ const FoodDetails = (props) => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:3002/food/" + foodId)
+    fetch("https://red-onion-restaurant-by-shakib.herokuapp.com/food/" + foodId)
       .then((res) => res.json())
       .then((data) => {
         setSelectedFood(data);

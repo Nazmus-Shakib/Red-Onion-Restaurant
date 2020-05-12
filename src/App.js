@@ -38,7 +38,6 @@ function App() {
     const orderedItems = cart.map((cartItem) => {
       return { food_id: cartItem.id, quantity: cartItem.quantity };
     });
-    console.log(orderedItems);
 
     // place orders
     const orderDetailsData = {
@@ -47,7 +46,7 @@ function App() {
       items: orderedItems,
       details: deliveryDetails,
     };
-    fetch("http://localhost:3002/placeOrder", {
+    fetch("https://red-onion-restaurant-by-shakib.herokuapp.com/placeOrder", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
